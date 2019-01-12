@@ -1,2 +1,2 @@
-# jtcpws-junit
-Java Testing Communication Protocols and Web Services with JUnit
+# teacup-java-engine-junit
+Java Testing Framework for Communication Protocols and Web Services with JUnit
