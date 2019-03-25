@@ -1,8 +1,7 @@
 package org.teacup.engine.junit;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import java.util.Optional;
@@ -15,15 +14,20 @@ import org.junit.platform.engine.support.descriptor.ClassSource;
 import org.junit.platform.launcher.TestExecutionListener;
 import org.junit.platform.launcher.TestIdentifier;
 import org.teacup.core.Executor;
+import org.teacup.core.Fixture;
 
 class ListenerTest {
-  private final Executor executor = mock(Executor.class);
+  private final Executor executor = ExecutorHolder.getExecutor();
+  private final Fixture fixture = mock(Fixture.class);
   private final TestDescriptor testDescriptor = mock(TestDescriptor.class);
   private final TestExecutionListener testExecutionListener = new Listener();
 
   @BeforeEach
-  void beforeEach() throws IllegalAccessException, NoSuchFieldException {
-    org.teacup.core.Utils.setField(Listener.class, testExecutionListener, "executor", executor);
+  @SuppressWarnings("unchecked")
+  void beforeEach() {
+    when(fixture.value()).thenReturn((Class) TestSetup.class);
+
+    executor.executeFixture(fixture);
 
     var uniqueId = mock(UniqueId.class);
 
@@ -35,12 +39,12 @@ class ListenerTest {
   void executionStarted() {
     when(testDescriptor.getSource()).thenReturn(Optional.of(ClassSource.from(getClass())));
     testExecutionListener.executionStarted(TestIdentifier.from(testDescriptor));
-    verify(executor).executeFixture(null);
+    assertThat(executor.getCurrentSetup()).isEmpty();
   }
 
   @Test
   void executionStartedWhenNotClass() {
     testExecutionListener.executionStarted(TestIdentifier.from(testDescriptor));
-    verifyZeroInteractions(executor);
+    assertThat(executor.getCurrentSetup()).containsInstanceOf(TestSetup.class);
   }
 }
