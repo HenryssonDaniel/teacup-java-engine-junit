@@ -2,6 +2,9 @@ package org.teacup.engine.junit;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.junit.jupiter.engine.config.CachingJupiterConfiguration;
+import org.junit.jupiter.engine.config.DefaultJupiterConfiguration;
+import org.junit.jupiter.engine.config.JupiterConfiguration;
 import org.junit.jupiter.engine.descriptor.JupiterEngineDescriptor;
 import org.junit.jupiter.engine.discovery.DiscoverySelectorResolver;
 import org.junit.jupiter.engine.execution.JupiterEngineExecutionContext;
@@ -24,12 +27,17 @@ public class TeacupTestEngine extends HierarchicalTestEngine<JupiterEngineExecut
   public TestDescriptor discover(EngineDiscoveryRequest engineDiscoveryRequest, UniqueId uniqueId) {
     LOGGER.log(Level.SEVERE, "Discover using unique ID: " + uniqueId);
 
-    TestDescriptor engineDescriptor = new JupiterEngineDescriptor(uniqueId);
+    JupiterConfiguration jupiterConfiguration =
+        new CachingJupiterConfiguration(
+            new DefaultJupiterConfiguration(engineDiscoveryRequest.getConfigurationParameters()));
 
-    new DiscoverySelectorResolver().resolveSelectors(engineDiscoveryRequest, engineDescriptor);
-    Utils.group(engineDescriptor);
+    TestDescriptor testDescriptor = new JupiterEngineDescriptor(uniqueId, jupiterConfiguration);
 
-    return engineDescriptor;
+    new DiscoverySelectorResolver()
+        .resolveSelectors(engineDiscoveryRequest, jupiterConfiguration, testDescriptor);
+    Utils.group(testDescriptor);
+
+    return testDescriptor;
   }
 
   @Override
@@ -42,6 +50,6 @@ public class TeacupTestEngine extends HierarchicalTestEngine<JupiterEngineExecut
       ExecutionRequest executionRequest) {
     return new JupiterEngineExecutionContext(
         executionRequest.getEngineExecutionListener(),
-        executionRequest.getConfigurationParameters());
+        ((JupiterEngineDescriptor) executionRequest.getRootTestDescriptor()).getConfiguration());
   }
 }
