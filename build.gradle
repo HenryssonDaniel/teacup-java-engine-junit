@@ -7,8 +7,8 @@ group = 'org.teacup.engine'
 version = '1.0.0-SNAPSHOT'
 
 dependencies {
+    api 'io.github.henryssondaniel.teacup:core:1.0.0-SNAPSHOT'
     api 'org.junit.jupiter:junit-jupiter-engine:5.4.1'
-    api 'org.teacup:core:1.0.0-SNAPSHOT'
     implementation 'org.junit.platform:junit-platform-launcher:1.4.1'
     testImplementation 'org.assertj:assertj-core:3.12.2'
     testImplementation 'org.mockito:mockito-core:2.25.1'

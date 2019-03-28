@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import io.github.henryssondaniel.teacup.core.Fixture;
+import io.github.henryssondaniel.teacup.core.Setup;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,8 +13,6 @@ import org.junit.platform.engine.TestDescriptor;
 import org.junit.platform.engine.UniqueId;
 import org.junit.platform.engine.support.descriptor.AbstractTestDescriptor;
 import org.junit.platform.engine.support.descriptor.ClassSource;
-import org.teacup.core.Fixture;
-import org.teacup.core.Setup;
 
 class UtilsTest {
   private final TestDescriptor testDescriptor = new TestTestDescriptor();

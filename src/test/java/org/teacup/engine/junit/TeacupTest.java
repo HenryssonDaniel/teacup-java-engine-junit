@@ -4,12 +4,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import io.github.henryssondaniel.teacup.core.Fixture;
+import io.github.henryssondaniel.teacup.core.Server;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.opentest4j.AssertionFailedError;
-import org.teacup.core.Fixture;
-import org.teacup.core.Server;
 
 class TeacupTest {
   static final String CLIENT = "value";

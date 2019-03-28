@@ -1,11 +1,11 @@
 package org.teacup.engine.junit;
 
+import io.github.henryssondaniel.teacup.core.Executor;
+import io.github.henryssondaniel.teacup.core.Server;
+import io.github.henryssondaniel.teacup.core.TeacupException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.jupiter.api.Assertions;
-import org.teacup.core.Executor;
-import org.teacup.core.Server;
-import org.teacup.core.TeacupException;
 
 /**
  * Class that contains convenience methods to be used from a test.
@@ -33,7 +33,7 @@ public enum Teacup {
     T client = null;
 
     try {
-      client = org.teacup.core.Teacup.getClient(clazz, EXECUTOR, name);
+      client = io.github.henryssondaniel.teacup.core.Teacup.getClient(clazz, EXECUTOR, name);
     } catch (TeacupException e) {
       Assertions.fail(String.format(ERROR, "client"), e);
     }
@@ -54,7 +54,7 @@ public enum Teacup {
     T server = null;
 
     try {
-      server = org.teacup.core.Teacup.getServer(clazz, EXECUTOR, name);
+      server = io.github.henryssondaniel.teacup.core.Teacup.getServer(clazz, EXECUTOR, name);
     } catch (TeacupException e) {
       Assertions.fail(String.format(ERROR, "server"), e);
     }

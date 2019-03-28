@@ -1,12 +1,12 @@
 package org.teacup.engine.junit;
 
+import io.github.henryssondaniel.teacup.core.Executor;
+import io.github.henryssondaniel.teacup.core.Fixture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.platform.engine.support.descriptor.ClassSource;
 import org.junit.platform.launcher.TestExecutionListener;
 import org.junit.platform.launcher.TestIdentifier;
-import org.teacup.core.Executor;
-import org.teacup.core.Fixture;
 
 /**
  * Teacup test execution listener.
