@@ -1,4 +1,4 @@
-package org.teacup.engine.junit;
+package io.github.henryssondaniel.teacup.engine.junit;
 
 import io.github.henryssondaniel.teacup.core.Executor;
 import io.github.henryssondaniel.teacup.core.ExecutorFactory;

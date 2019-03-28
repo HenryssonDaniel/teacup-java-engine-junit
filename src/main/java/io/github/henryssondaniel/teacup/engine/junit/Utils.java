@@ -1,4 +1,4 @@
-package org.teacup.engine.junit;
+package io.github.henryssondaniel.teacup.engine.junit;
 
 import io.github.henryssondaniel.teacup.core.Fixture;
 import io.github.henryssondaniel.teacup.core.Setup;

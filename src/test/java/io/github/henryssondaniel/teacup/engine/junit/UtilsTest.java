@@ -1,4 +1,4 @@
-package org.teacup.engine.junit;
+package io.github.henryssondaniel.teacup.engine.junit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;

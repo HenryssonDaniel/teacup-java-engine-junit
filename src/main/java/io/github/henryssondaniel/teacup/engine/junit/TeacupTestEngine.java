@@ -1,4 +1,4 @@
-package org.teacup.engine.junit;
+package io.github.henryssondaniel.teacup.engine.junit;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
