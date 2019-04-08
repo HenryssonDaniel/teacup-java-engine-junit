@@ -18,7 +18,7 @@ public enum Teacup {
   private static final String ERROR = "Could not retrieve the %s";
   private static final Executor EXECUTOR = ExecutorHolder.getExecutor();
   private static final Logger LOGGER = Logger.getLogger(Teacup.class.getName());
-  private static final String MESSAGE = "Getting the %s: %s with class %s";
+  private static final String MESSAGE = "Getting the {0}: {1} with class {2}";
 
   /**
    * Returns the client.
@@ -29,7 +29,7 @@ public enum Teacup {
    * @return the client
    */
   public static <T> T getClient(Class<T> clazz, String name) {
-    LOGGER.log(Level.FINE, String.format(MESSAGE, "client", name, clazz.getName()));
+    LOGGER.log(Level.FINE, MESSAGE, new Object[] {"client", name, clazz.getName()});
     T client = null;
 
     try {
@@ -50,7 +50,7 @@ public enum Teacup {
    * @return the server
    */
   public static <T extends Server> T getServer(Class<T> clazz, String name) {
-    LOGGER.log(Level.FINE, String.format(MESSAGE, "server", name, clazz.getName()));
+    LOGGER.log(Level.FINE, MESSAGE, new Object[] {"server", name, clazz.getName()});
     T server = null;
 
     try {

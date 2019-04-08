@@ -25,7 +25,7 @@ public class TeacupTestEngine extends HierarchicalTestEngine<JupiterEngineExecut
 
   @Override
   public TestDescriptor discover(EngineDiscoveryRequest engineDiscoveryRequest, UniqueId uniqueId) {
-    LOGGER.log(Level.SEVERE, "Discover using unique ID: " + uniqueId);
+    LOGGER.log(Level.SEVERE, "Discover using unique ID: {0}", uniqueId);
 
     JupiterConfiguration jupiterConfiguration =
         new CachingJupiterConfiguration(
