@@ -1,14 +1,13 @@
 # teacup-java-engine-junit
 Java **Te**sting Fr**a**mework for **C**omm**u**nication **P**rotocols and Web Services with JUnit
 
+[![Build Status](https://travis-ci.com/HenryssonDaniel/teacup-java-engine-junit.svg?branch=master)](https://travis-ci.com/HenryssonDaniel/teacup-java-engine-junit) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=HenryssonDaniel_teacup-java-engine-junit&metric=coverage)](https://sonarcloud.io/dashboard?id=HenryssonDaniel_teacup-java-engine-junit)
 ## What ##
 Custom JUnit 5 engine.  
 This engine interacts with the Teacup core project to get fixture data, such as the current fixture and added clients/servers.
-
 ## Why ##
 It can be time and resource consuming to use fixtures.  
 Therefore this engine will change the order of the tests before executing them so that the minimal fixture changes are required.
-
 ## How ##
 This is done by extending the Jupiter engine.  
 
