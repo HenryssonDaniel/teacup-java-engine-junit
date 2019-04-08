@@ -27,6 +27,7 @@ public enum Teacup {
    * @param name the name of the client
    * @param <T> the client type
    * @return the client
+   * @since 1.0
    */
   public static <T> T getClient(Class<T> clazz, String name) {
     LOGGER.log(Level.FINE, MESSAGE, new Object[] {"client", name, clazz.getName()});
@@ -45,6 +46,7 @@ public enum Teacup {
    * @param name the name of the server
    * @param <T> the server type
    * @return the server
+   * @since 1.0
    */
   public static <T extends Server> T getServer(Class<T> clazz, String name) {
     LOGGER.log(Level.FINE, MESSAGE, new Object[] {"server", name, clazz.getName()});
