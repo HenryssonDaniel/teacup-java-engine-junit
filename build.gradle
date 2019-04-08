@@ -102,7 +102,7 @@ signing {
 
 sonarqube {
     properties {
-        property "sonar.projectKey", "HenryssonDaniel_teacup-java-core"
+        property "sonar.projectKey", "HenryssonDaniel_teacup-java-engine-junit"
     }
 }
 

@@ -22,8 +22,6 @@ matrix:
   include:
     - jdk: oraclejdk11
       env: FULL_RUN=true
-    - jdk: openjdk10
-      env: FULL_RUN=false
     - jdk: openjdk11
       env: FULL_RUN=false
     - jdk: openjdk12
