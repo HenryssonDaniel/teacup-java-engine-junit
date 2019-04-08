@@ -5,7 +5,7 @@ import io.github.henryssondaniel.teacup.core.Server;
 import io.github.henryssondaniel.teacup.core.TeacupException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.junit.jupiter.api.Assertions;
+import org.opentest4j.AssertionFailedError;
 
 /**
  * Class that contains convenience methods to be used from a test.
@@ -30,15 +30,12 @@ public enum Teacup {
    */
   public static <T> T getClient(Class<T> clazz, String name) {
     LOGGER.log(Level.FINE, MESSAGE, new Object[] {"client", name, clazz.getName()});
-    T client = null;
 
     try {
-      client = io.github.henryssondaniel.teacup.core.Teacup.getClient(clazz, EXECUTOR, name);
+      return io.github.henryssondaniel.teacup.core.Teacup.getClient(clazz, EXECUTOR, name);
     } catch (TeacupException e) {
-      Assertions.fail(String.format(ERROR, "client"), e);
+      throw new AssertionFailedError(String.format(ERROR, "client"), e);
     }
-
-    return client;
   }
 
   /**
@@ -51,14 +48,11 @@ public enum Teacup {
    */
   public static <T extends Server> T getServer(Class<T> clazz, String name) {
     LOGGER.log(Level.FINE, MESSAGE, new Object[] {"server", name, clazz.getName()});
-    T server = null;
 
     try {
-      server = io.github.henryssondaniel.teacup.core.Teacup.getServer(clazz, EXECUTOR, name);
+      return io.github.henryssondaniel.teacup.core.Teacup.getServer(clazz, EXECUTOR, name);
     } catch (TeacupException e) {
-      Assertions.fail(String.format(ERROR, "server"), e);
+      throw new AssertionFailedError(String.format(ERROR, "server"), e);
     }
-
-    return server;
   }
 }
