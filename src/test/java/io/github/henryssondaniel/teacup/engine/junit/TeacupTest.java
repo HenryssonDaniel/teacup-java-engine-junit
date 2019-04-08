@@ -16,6 +16,8 @@ class TeacupTest {
   static final String NAME = "name";
   static final Server SERVER = mock(Server.class);
 
+  private static final String MESSAGE = "Could not retrieve the %s";
+
   @BeforeEach
   @SuppressWarnings("unchecked")
   void beforeEach() {
@@ -35,7 +37,8 @@ class TeacupTest {
     try {
       Teacup.getClient(String.class, "server");
       Assertions.fail();
-    } catch (AssertionFailedError ignored) {
+    } catch (AssertionFailedError assertionFailedError) {
+      assertThat(assertionFailedError.getMessage()).isEqualTo(String.format(MESSAGE, "client"));
     }
   }
 
@@ -49,7 +52,8 @@ class TeacupTest {
     try {
       Teacup.getServer(Server.class, "client");
       Assertions.fail();
-    } catch (AssertionFailedError ignored) {
+    } catch (AssertionFailedError assertionFailedError) {
+      assertThat(assertionFailedError.getMessage()).isEqualTo(String.format(MESSAGE, "server"));
     }
   }
 }
