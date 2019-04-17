@@ -9,14 +9,51 @@ plugins {
 group = 'io.github.henryssondaniel.teacup.engine'
 version = '1.0.1-SNAPSHOT'
 
-task sourcesJar(type: Jar) {
-    from sourceSets.main.allJava
-    archiveClassifier = 'sources'
+sourceSets {
+    intTest {
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
+    }
+}
+
+task integrationTest(type: Test) {
+    description = 'Runs integration tests.'
+    group = 'verification'
+
+    testClassesDirs = sourceSets.intTest.output.classesDirs
+    classpath = sourceSets.intTest.runtimeClasspath
+    shouldRunAfter test
+}
+
+task integrationTestReport(type: JacocoReport) {
+    executionData integrationTest
+    sourceSets sourceSets.intTest
 }
 
 task javadocJar(type: Jar) {
     from javadoc
     archiveClassifier = 'javadoc'
+}
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allJava
+    archiveClassifier = 'sources'
+}
+
+check.dependsOn integrationTest
+jacocoTestReport.dependsOn integrationTestReport
+
+tasks.withType(Test) {
+    useJUnitPlatform()
+
+    testLogging {
+        showStandardStreams = true
+    }
+}
+
+configurations {
+    intTestImplementation.extendsFrom implementation
+    intTestRuntimeOnly.extendsFrom runtimeOnly
 }
 
 dependencies {
@@ -103,13 +140,5 @@ signing {
 sonarqube {
     properties {
         property "sonar.projectKey", "HenryssonDaniel_teacup-java-engine-junit"
-    }
-}
-
-test {
-    useJUnitPlatform {}
-
-    testLogging {
-        showStandardStreams = true
     }
 }
