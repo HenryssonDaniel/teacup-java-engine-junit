@@ -3,6 +3,7 @@ package io.github.henryssondaniel.teacup.engine.junit;
 import io.github.henryssondaniel.teacup.core.Executor;
 import io.github.henryssondaniel.teacup.core.Server;
 import io.github.henryssondaniel.teacup.core.TeacupException;
+import io.github.henryssondaniel.teacup.core.logging.Factory;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.opentest4j.AssertionFailedError;
@@ -17,7 +18,7 @@ public enum Teacup {
 
   private static final String ERROR = "Could not retrieve the %s";
   private static final Executor EXECUTOR = ExecutorHolder.getExecutor();
-  private static final Logger LOGGER = Logger.getLogger(Teacup.class.getName());
+  private static final Logger LOGGER = Factory.getLogger(Teacup.class);
   private static final String MESSAGE = "Getting the {0}: {1} with class {2}";
 
   /**

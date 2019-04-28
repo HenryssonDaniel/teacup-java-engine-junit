@@ -1,5 +1,6 @@
 package io.github.henryssondaniel.teacup.engine.junit;
 
+import io.github.henryssondaniel.teacup.core.logging.Factory;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.jupiter.engine.config.CachingJupiterConfiguration;
@@ -21,7 +22,7 @@ import org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine;
  */
 public class TeacupTestEngine extends HierarchicalTestEngine<JupiterEngineExecutionContext> {
   private static final String ID = "teacup";
-  private static final Logger LOGGER = Logger.getLogger(TeacupTestEngine.class.getName());
+  private static final Logger LOGGER = Factory.getLogger(TeacupTestEngine.class);
 
   @Override
   public TestDescriptor discover(EngineDiscoveryRequest engineDiscoveryRequest, UniqueId uniqueId) {
