@@ -35,7 +35,7 @@ public class Listener implements TestExecutionListener {
   private static final Executor EXECUTOR = ExecutorHolder.getExecutor();
   private static final Logger LOGGER =
       io.github.henryssondaniel.teacup.core.logging.Factory.getLogger(Listener.class);
-  private static final String METHOD_MISSING = "%s test method is not part of the test plan.";
+  private static final String METHOD_MISSING = "{0} test method is not part of the test plan.";
   private static final Reporter REPORTER = Factory.getReporter();
 
   private final Map<TestIdentifier, TestCase> map = new HashMap<>(0);
@@ -49,7 +49,7 @@ public class Listener implements TestExecutionListener {
     if (testIdentifier.getSource().orElse(null) instanceof MethodSource) {
       var testCase = map.get(testIdentifier);
 
-      if (testCase == null) LOGGER.log(Level.WARNING, String.format(METHOD_MISSING, "Ended"));
+      if (testCase == null) LOGGER.log(Level.WARNING, METHOD_MISSING, "Ended");
       else finishTestCase(testExecutionResult, testCase);
     }
   }
@@ -59,7 +59,7 @@ public class Listener implements TestExecutionListener {
     if (testIdentifier.getSource().orElse(null) instanceof MethodSource) {
       var testCase = map.get(testIdentifier);
 
-      if (testCase == null) LOGGER.log(Level.WARNING, String.format(METHOD_MISSING, "Skipped"));
+      if (testCase == null) LOGGER.log(Level.WARNING, METHOD_MISSING, "Skipped");
       else REPORTER.skipped(reason, testCase);
     }
   }
@@ -150,14 +150,14 @@ public class Listener implements TestExecutionListener {
         testStatus = TestStatus.FAILED;
         break;
       default:
-        testStatus = TestStatus.SUCCESSFULL;
+        testStatus = TestStatus.SUCCESSFUL;
     }
 
     return testStatus;
   }
 
   private static void startTestCase(TestCase testCase) {
-    if (testCase == null) LOGGER.log(Level.WARNING, String.format(METHOD_MISSING, "Started"));
+    if (testCase == null) LOGGER.log(Level.WARNING, METHOD_MISSING, "Started");
     else {
       testCase.setTimeStarted(System.currentTimeMillis());
       REPORTER.started(testCase);
