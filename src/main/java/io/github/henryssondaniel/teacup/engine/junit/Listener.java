@@ -44,7 +44,7 @@ public class Listener implements TestExecutionListener {
   public void dynamicTestRegistered(TestIdentifier testIdentifier) {
     LOGGER.log(Level.FINE, "Dynamic test {0} registered", testIdentifier.getDisplayName());
 
-    createNode(testIdentifier);
+    REPORTER.added(createNode(testIdentifier));
   }
 
   @Override
@@ -119,9 +119,7 @@ public class Listener implements TestExecutionListener {
     map.clear();
     plan = null;
 
-    REPORTER.finished(
-        io.github.henryssondaniel.teacup.core.testing.Factory.createResult(
-            io.github.henryssondaniel.teacup.core.testing.Status.SUCCESSFUL, null));
+    REPORTER.terminated();
   }
 
   @Override
@@ -129,7 +127,7 @@ public class Listener implements TestExecutionListener {
     LOGGER.log(Level.FINE, "Execution of test plan started");
 
     plan = testPlan;
-    REPORTER.started(createChildren(testPlan.getRoots()));
+    REPORTER.initialized(createChildren(testPlan.getRoots()));
   }
 
   private Collection<Node> createChildren(Collection<TestIdentifier> testIdentifiers) {
