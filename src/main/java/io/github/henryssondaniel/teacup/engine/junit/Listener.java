@@ -42,7 +42,7 @@ public class Listener implements TestExecutionListener {
 
   @Override
   public void dynamicTestRegistered(TestIdentifier testIdentifier) {
-    LOGGER.log(Level.FINE, "Dynamic test " + testIdentifier.getDisplayName() + " registered");
+    LOGGER.log(Level.FINE, "Dynamic test {0} registered", testIdentifier.getDisplayName());
 
     createNode(testIdentifier);
   }
@@ -52,7 +52,7 @@ public class Listener implements TestExecutionListener {
       TestIdentifier testIdentifier, TestExecutionResult testExecutionResult) {
     var displayName = testIdentifier.getDisplayName();
 
-    LOGGER.log(Level.FINE, "Execution of " + displayName + " finished");
+    LOGGER.log(Level.FINE, "Execution of {0} finished", displayName);
 
     var node = map.remove(testIdentifier);
 
@@ -71,7 +71,7 @@ public class Listener implements TestExecutionListener {
   public void executionSkipped(TestIdentifier testIdentifier, String reason) {
     var displayName = testIdentifier.getDisplayName();
 
-    LOGGER.log(Level.FINE, "Execution of " + displayName + " skipped");
+    LOGGER.log(Level.FINE, "Execution of {0} skipped", displayName);
 
     var node = map.remove(testIdentifier);
     if (node == null) LOGGER.log(Level.WARNING, MISSING, new Object[] {"Skipped", displayName});
@@ -82,7 +82,7 @@ public class Listener implements TestExecutionListener {
   public void executionStarted(TestIdentifier testIdentifier) {
     var displayName = testIdentifier.getDisplayName();
 
-    LOGGER.log(Level.FINE, "Execution of " + displayName + " started");
+    LOGGER.log(Level.FINE, "Execution of {0} started", displayName);
 
     var testSource = getClassSource(testIdentifier);
     if (testSource != null)
@@ -98,7 +98,7 @@ public class Listener implements TestExecutionListener {
 
   @Override
   public void reportingEntryPublished(TestIdentifier testIdentifier, ReportEntry reportEntry) {
-    LOGGER.log(Level.FINE, "Reporting entry published for " + testIdentifier.getDisplayName());
+    LOGGER.log(Level.FINE, "Reporting entry published for {0}", testIdentifier.getDisplayName());
 
     var builder = new StringBuilder(0);
 
