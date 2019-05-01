@@ -4,24 +4,22 @@ import io.github.henryssondaniel.teacup.core.Executor;
 import io.github.henryssondaniel.teacup.core.Fixture;
 import io.github.henryssondaniel.teacup.core.reporting.Factory;
 import io.github.henryssondaniel.teacup.core.reporting.Reporter;
-import io.github.henryssondaniel.teacup.core.reporting.TestCase;
-import io.github.henryssondaniel.teacup.core.reporting.TestStatus;
-import io.github.henryssondaniel.teacup.core.reporting.TestSuite;
+import io.github.henryssondaniel.teacup.core.testing.Node;
+import java.io.File;
 import java.nio.file.Path;
 import java.time.ZoneOffset;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import org.junit.platform.engine.TestExecutionResult;
 import org.junit.platform.engine.TestExecutionResult.Status;
 import org.junit.platform.engine.reporting.ReportEntry;
 import org.junit.platform.engine.support.descriptor.ClassSource;
-import org.junit.platform.engine.support.descriptor.MethodSource;
 import org.junit.platform.launcher.TestExecutionListener;
 import org.junit.platform.launcher.TestIdentifier;
 import org.junit.platform.launcher.TestPlan;
@@ -35,45 +33,67 @@ public class Listener implements TestExecutionListener {
   private static final Executor EXECUTOR = ExecutorHolder.getExecutor();
   private static final Logger LOGGER =
       io.github.henryssondaniel.teacup.core.logging.Factory.getLogger(Listener.class);
-  private static final String METHOD_MISSING = "{0} test method is not part of the test plan.";
+  private static final String MISSING = "{0} {1} is not part of the test plan.";
   private static final Reporter REPORTER = Factory.getReporter();
 
-  private final Map<TestIdentifier, TestCase> map = new HashMap<>(0);
-  private final Collection<TestSuite> testSuites = new LinkedHashSet<>(0);
+  private final Map<TestIdentifier, Node> map = new HashMap<>(0);
+
+  private TestPlan plan;
+
+  @Override
+  public void dynamicTestRegistered(TestIdentifier testIdentifier) {
+    LOGGER.log(Level.FINE, "Dynamic test " + testIdentifier.getDisplayName() + " registered");
+
+    createNode(testIdentifier);
+  }
 
   @Override
   public void executionFinished(
       TestIdentifier testIdentifier, TestExecutionResult testExecutionResult) {
-    LOGGER.log(Level.FINE, "Execution of " + testIdentifier.getDisplayName() + " finished");
+    var displayName = testIdentifier.getDisplayName();
 
-    if (testIdentifier.getSource().orElse(null) instanceof MethodSource) {
-      var testCase = map.get(testIdentifier);
+    LOGGER.log(Level.FINE, "Execution of " + displayName + " finished");
 
-      if (testCase == null) LOGGER.log(Level.WARNING, METHOD_MISSING, "Ended");
-      else finishTestCase(testExecutionResult, testCase);
+    var node = map.remove(testIdentifier);
+
+    if (node == null) LOGGER.log(Level.WARNING, MISSING, new Object[] {"Ended", displayName});
+    else {
+      node.setTimeFinished(System.currentTimeMillis());
+
+      REPORTER.finished(
+          io.github.henryssondaniel.teacup.core.testing.Factory.createResult(
+              getStatus(testExecutionResult.getStatus()),
+              testExecutionResult.getThrowable().orElse(null)));
     }
   }
 
   @Override
   public void executionSkipped(TestIdentifier testIdentifier, String reason) {
-    if (testIdentifier.getSource().orElse(null) instanceof MethodSource) {
-      var testCase = map.get(testIdentifier);
+    var displayName = testIdentifier.getDisplayName();
 
-      if (testCase == null) LOGGER.log(Level.WARNING, METHOD_MISSING, "Skipped");
-      else REPORTER.skipped(reason, testCase);
-    }
+    LOGGER.log(Level.FINE, "Execution of " + displayName + " skipped");
+
+    var node = map.remove(testIdentifier);
+    if (node == null) LOGGER.log(Level.WARNING, MISSING, new Object[] {"Skipped", displayName});
+    else REPORTER.skipped(node, reason);
   }
 
   @Override
   public void executionStarted(TestIdentifier testIdentifier) {
-    LOGGER.log(Level.FINE, "Execution of " + testIdentifier.getDisplayName() + " started");
+    var displayName = testIdentifier.getDisplayName();
 
-    var testSource = testIdentifier.getSource().orElse(null);
+    LOGGER.log(Level.FINE, "Execution of " + displayName + " started");
 
-    if (testSource instanceof ClassSource)
-      EXECUTOR.executeFixture(
-          ((ClassSource) testSource).getJavaClass().getAnnotation(Fixture.class));
-    else if (testSource instanceof MethodSource) startTestCase(map.get(testIdentifier));
+    var testSource = getClassSource(testIdentifier);
+    if (testSource != null)
+      EXECUTOR.executeFixture(testSource.getJavaClass().getAnnotation(Fixture.class));
+
+    var node = map.get(testIdentifier);
+    if (node == null) LOGGER.log(Level.WARNING, MISSING, new Object[] {"Started", displayName});
+    else {
+      node.setTimeStarted(System.currentTimeMillis());
+      REPORTER.started(node);
+    }
   }
 
   @Override
@@ -95,72 +115,90 @@ public class Listener implements TestExecutionListener {
   @Override
   public void testPlanExecutionFinished(TestPlan testPlan) {
     LOGGER.log(Level.FINE, "Execution of test plan started");
-    REPORTER.finished(testSuites);
-    testSuites.clear();
+
+    map.clear();
+    plan = null;
+
+    REPORTER.finished(
+        io.github.henryssondaniel.teacup.core.testing.Factory.createResult(
+            io.github.henryssondaniel.teacup.core.testing.Status.SUCCESSFUL, null));
   }
 
   @Override
   public void testPlanExecutionStarted(TestPlan testPlan) {
     LOGGER.log(Level.FINE, "Execution of test plan started");
 
-    testSuites.addAll(
-        testPlan.getRoots().stream()
-            .map(
-                testIdentifier ->
-                    Factory.createTestSuite(
-                        testIdentifier.getDisplayName(),
-                        testPlan.getDescendants(testIdentifier).stream()
-                            .filter(TestIdentifier::isTest)
-                            .map(this::createTestCase)
-                            .collect(Collectors.toSet())))
-            .collect(Collectors.toSet()));
-
-    REPORTER.started(testSuites);
+    plan = testPlan;
+    REPORTER.started(createChildren(testPlan.getRoots()));
   }
 
-  private TestCase createTestCase(TestIdentifier testIdentifier) {
-    var methodSource = (MethodSource) testIdentifier.getSource().orElseThrow();
-
-    var testCase =
-        Factory.createTestCase(methodSource.getMethodName(), Path.of(methodSource.getClassName()));
-
-    map.put(testIdentifier, testCase);
-
-    return testCase;
+  private Collection<Node> createChildren(Collection<TestIdentifier> testIdentifiers) {
+    return testIdentifiers.stream().map(this::createNode).collect(Collectors.toSet());
   }
 
-  private static void finishTestCase(TestExecutionResult testExecutionResult, TestCase testCase) {
-    testCase.setTimeFinished(System.currentTimeMillis());
-
-    REPORTER.finished(
-        testCase,
-        Factory.createTestResult(
-            getTestStatus(testExecutionResult.getStatus()),
-            testExecutionResult.getThrowable().orElse(null)));
+  private Node createNode(TestIdentifier testIdentifier) {
+    var testNode =
+        io.github.henryssondaniel.teacup.core.testing.Factory.createNode(
+            getName(testIdentifier), createChildren(plan.getChildren(testIdentifier)));
+    map.put(testIdentifier, testNode);
+    return testNode;
   }
 
-  private static TestStatus getTestStatus(Status status) {
-    TestStatus testStatus;
+  private static ClassSource getClassSource(TestIdentifier testIdentifier) {
+    return testIdentifier
+        .getSource()
+        .filter(ClassSource.class::isInstance)
+        .map(ClassSource.class::cast)
+        .orElse(null);
+  }
+
+  private String getName(TestIdentifier testIdentifier) {
+    var path = Path.of("");
+
+    var identifier = testIdentifier;
+    var shouldContinue = true;
+
+    while (identifier != null && shouldContinue) {
+      var classSource = getClassSource(identifier);
+
+      var temp = path;
+
+      if (classSource == null) {
+        path = Path.of(identifier.getDisplayName());
+        identifier = getParent(identifier, plan);
+      } else {
+        path = getPath(classSource.getJavaClass());
+        shouldContinue = false;
+      }
+
+      path = path.resolve(temp);
+    }
+
+    return path.toString().replaceFirst(Pattern.quote(System.getProperty("user.dir")), "");
+  }
+
+  private static TestIdentifier getParent(TestIdentifier testIdentifier, TestPlan testPlan) {
+    return testPlan.getParent(testIdentifier).orElse(null);
+  }
+
+  private static Path getPath(Class<?> clazz) {
+    return new File(clazz.getResource(".").getFile()).toPath().resolve(clazz.getSimpleName());
+  }
+
+  private static io.github.henryssondaniel.teacup.core.testing.Status getStatus(Status status) {
+    io.github.henryssondaniel.teacup.core.testing.Status testStatus;
 
     switch (status) {
       case ABORTED:
-        testStatus = TestStatus.ABORTED;
+        testStatus = io.github.henryssondaniel.teacup.core.testing.Status.ABORTED;
         break;
       case FAILED:
-        testStatus = TestStatus.FAILED;
+        testStatus = io.github.henryssondaniel.teacup.core.testing.Status.FAILED;
         break;
       default:
-        testStatus = TestStatus.SUCCESSFUL;
+        testStatus = io.github.henryssondaniel.teacup.core.testing.Status.SUCCESSFUL;
     }
 
     return testStatus;
-  }
-
-  private static void startTestCase(TestCase testCase) {
-    if (testCase == null) LOGGER.log(Level.WARNING, METHOD_MISSING, "Started");
-    else {
-      testCase.setTimeStarted(System.currentTimeMillis());
-      REPORTER.started(testCase);
-    }
   }
 }
