@@ -61,6 +61,7 @@ public class Listener implements TestExecutionListener {
       node.setTimeFinished(System.currentTimeMillis());
 
       REPORTER.finished(
+          node,
           io.github.henryssondaniel.teacup.core.testing.Factory.createResult(
               getStatus(testExecutionResult.getStatus()),
               testExecutionResult.getThrowable().orElse(null)));
@@ -109,7 +110,7 @@ public class Listener implements TestExecutionListener {
     var logRecord = new LogRecord(Level.INFO, builder.toString());
     logRecord.setInstant(reportEntry.getTimestamp().toInstant(ZoneOffset.UTC));
 
-    REPORTER.log(logRecord);
+    REPORTER.log(logRecord, map.get(testIdentifier));
   }
 
   @Override
