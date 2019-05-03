@@ -192,7 +192,8 @@ class ListenerTest {
         .toPath()
         .resolve(clazz.getSimpleName())
         .toString()
-        .replaceFirst(Pattern.quote(System.getProperty("user.dir")), "");
+        .replaceFirst(Pattern.quote(System.getProperty("user.dir")), "")
+        .substring(1);
   }
 
   private Node verifyTestIdentifier(String name, TestIdentifier testIdentifier)

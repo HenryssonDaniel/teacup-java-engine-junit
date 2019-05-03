@@ -173,7 +173,9 @@ public class Listener implements TestExecutionListener {
       path = path.resolve(temp);
     }
 
-    return path.toString().replaceFirst(Pattern.quote(System.getProperty("user.dir")), "");
+    var name = path.toString().replaceFirst(Pattern.quote(System.getProperty("user.dir")), "");
+
+    return name.startsWith(File.separator) ? name.substring(1) : name;
   }
 
   private static TestIdentifier getParent(TestIdentifier testIdentifier, TestPlan testPlan) {
