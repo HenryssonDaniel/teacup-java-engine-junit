@@ -152,6 +152,20 @@ public class Listener implements TestExecutionListener {
   }
 
   private String getName(TestIdentifier testIdentifier) {
+    var name =
+        getPath(testIdentifier)
+            .toString()
+            .replaceFirst(Pattern.quote(System.getProperty("user.dir")), "");
+    var root = getRoot(testIdentifier);
+
+    return testIdentifier.equals(root) ? name : root.getDisplayName() + name;
+  }
+
+  private static TestIdentifier getParent(TestIdentifier testIdentifier, TestPlan testPlan) {
+    return testPlan.getParent(testIdentifier).orElse(null);
+  }
+
+  private Path getPath(TestIdentifier testIdentifier) {
     var path = Path.of("");
 
     var identifier = testIdentifier;
@@ -173,17 +187,24 @@ public class Listener implements TestExecutionListener {
       path = path.resolve(temp);
     }
 
-    var name = path.toString().replaceFirst(Pattern.quote(System.getProperty("user.dir")), "");
-
-    return name.startsWith(File.separator) ? name.substring(1) : name;
-  }
-
-  private static TestIdentifier getParent(TestIdentifier testIdentifier, TestPlan testPlan) {
-    return testPlan.getParent(testIdentifier).orElse(null);
+    return path;
   }
 
   private static Path getPath(Class<?> clazz) {
     return new File(clazz.getResource(".").getFile()).toPath().resolve(clazz.getSimpleName());
+  }
+
+  private TestIdentifier getRoot(TestIdentifier testIdentifier) {
+    var root = testIdentifier;
+
+    TestIdentifier temp;
+    do {
+      temp = plan.getParent(root).orElse(null);
+
+      if (temp != null) root = temp;
+    } while (temp != null);
+
+    return root;
   }
 
   private static io.github.henryssondaniel.teacup.core.testing.Status getStatus(Status status) {

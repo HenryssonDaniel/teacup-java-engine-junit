@@ -60,8 +60,21 @@ class ListenerTest {
     when(testDescriptor.getSource()).thenReturn(Optional.of(ClassSource.from(clazz)));
 
     var testIdentifier = TestIdentifier.from(testDescriptor);
+
+    var rootName = "root";
+
+    var uniqueId = mock(UniqueId.class);
+    when(testDescriptor.getDisplayName()).thenReturn(rootName);
+    when(testDescriptor.getUniqueId()).thenReturn(uniqueId);
+
+    var root = TestIdentifier.from(testDescriptor);
+
+    when(testPlan.getParent(testIdentifier))
+        .thenReturn(Optional.of(root))
+        .thenReturn(Optional.empty());
+
     testExecutionListener.dynamicTestRegistered(testIdentifier);
-    verifyTestIdentifier(getName(clazz), testIdentifier);
+    verifyTestIdentifier(rootName + getName(clazz), testIdentifier);
   }
 
   @Test
@@ -192,8 +205,7 @@ class ListenerTest {
         .toPath()
         .resolve(clazz.getSimpleName())
         .toString()
-        .replaceFirst(Pattern.quote(System.getProperty("user.dir")), "")
-        .substring(1);
+        .replaceFirst(Pattern.quote(System.getProperty("user.dir")), "");
   }
 
   private Node verifyTestIdentifier(String name, TestIdentifier testIdentifier)
