@@ -9,6 +9,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.time.ZoneOffset;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -44,7 +45,7 @@ public class Listener implements TestExecutionListener {
   public void dynamicTestRegistered(TestIdentifier testIdentifier) {
     LOGGER.log(Level.FINE, "Dynamic test {0} registered", testIdentifier.getDisplayName());
 
-    REPORTER.added(createNode(testIdentifier));
+    REPORTER.initialized(Collections.singletonList(createNode(testIdentifier)));
   }
 
   @Override
