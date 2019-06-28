@@ -21,9 +21,9 @@ matrix:
     - jdk: openjdk-ea
   include:
     - jdk: openjdk11
-      env: FULL_RUN=false
-    - jdk: openjdk12
       env: FULL_RUN=true
+    - jdk: openjdk12
+      env: FULL_RUN=false
     - jdk: openjdk-ea
       env: FULL_RUN=false
 script:
