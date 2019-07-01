@@ -32,10 +32,9 @@ public class TeacupTestEngine extends HierarchicalTestEngine<JupiterEngineExecut
         new CachingJupiterConfiguration(
             new DefaultJupiterConfiguration(engineDiscoveryRequest.getConfigurationParameters()));
 
-    TestDescriptor testDescriptor = new JupiterEngineDescriptor(uniqueId, jupiterConfiguration);
+    var testDescriptor = new JupiterEngineDescriptor(uniqueId, jupiterConfiguration);
 
-    new DiscoverySelectorResolver()
-        .resolveSelectors(engineDiscoveryRequest, jupiterConfiguration, testDescriptor);
+    new DiscoverySelectorResolver().resolveSelectors(engineDiscoveryRequest, testDescriptor);
     Utils.group(testDescriptor);
 
     return testDescriptor;
