@@ -13,6 +13,8 @@ cache:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
     - $HOME/.sonar/cache
+git:
+  depth: false
 if: tag IS blank
 install: true
 language: java
