@@ -1,6 +1,4 @@
 # [User Guide](https://henryssondaniel.github.io/teacup.github.io/)
-Java **Te**sting Fr**a**mework for **C**omm**u**nication **P**rotocols and Web Services with JUnit
-
 [![Build Status](https://travis-ci.com/HenryssonDaniel/teacup-java-engine-junit.svg?branch=master)](https://travis-ci.com/HenryssonDaniel/teacup-java-engine-junit)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=HenryssonDaniel_teacup-java-engine-junit&metric=coverage)](https://sonarcloud.io/dashboard?id=HenryssonDaniel_teacup-java-engine-junit)
 [![latest release](https://img.shields.io/badge/release%20notes-1.1.1-yellow.svg)](https://github.com/HenryssonDaniel/teacup-java-engine-junit/blob/master/doc/release-notes/official.md)
@@ -8,10 +6,12 @@ Java **Te**sting Fr**a**mework for **C**omm**u**nication **P**rotocols and Web S
 [![Javadocs](https://www.javadoc.io/badge/io.github.henryssondaniel.teacup.engine/junit.svg)](https://www.javadoc.io/doc/io.github.henryssondaniel.teacup.engine/junit)
 ## What ##
 Custom JUnit 5 engine.  
-This engine interacts with the Teacup core project to get fixture data, such as the current fixture and added clients/servers.
+This engine interacts with the Teacup core project to get fixture data, such as the current fixture
+and added clients/servers.
 ## Why ##
 It can be time and resource consuming to use fixtures.  
-Therefore this engine will change the order of the tests before executing them so that the minimal fixture changes are required.
+Therefore this engine will change the order of the tests before executing them so that the minimal
+fixture changes are required.
 ## How ##
 This is done by extending the Jupiter engine.  
 
