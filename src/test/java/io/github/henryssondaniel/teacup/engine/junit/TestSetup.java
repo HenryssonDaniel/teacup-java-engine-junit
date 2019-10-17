@@ -1,6 +1,6 @@
 package io.github.henryssondaniel.teacup.engine.junit;
 
-import io.github.henryssondaniel.teacup.core.DefaultSetup;
+import io.github.henryssondaniel.teacup.engine.DefaultSetup;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

@@ -1,9 +1,9 @@
 package io.github.henryssondaniel.teacup.engine.junit;
 
-import io.github.henryssondaniel.teacup.core.Executor;
 import io.github.henryssondaniel.teacup.core.Server;
-import io.github.henryssondaniel.teacup.core.TeacupException;
 import io.github.henryssondaniel.teacup.core.logging.Factory;
+import io.github.henryssondaniel.teacup.engine.Executor;
+import io.github.henryssondaniel.teacup.engine.TeacupException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.opentest4j.AssertionFailedError;
@@ -34,7 +34,7 @@ public enum Teacup {
     LOGGER.log(Level.FINE, MESSAGE, new Object[] {"client", name, clazz.getName()});
 
     try {
-      return io.github.henryssondaniel.teacup.core.Teacup.getClient(clazz, EXECUTOR, name);
+      return io.github.henryssondaniel.teacup.engine.Teacup.getClient(clazz, EXECUTOR, name);
     } catch (TeacupException e) {
       throw new AssertionFailedError(String.format(ERROR, "client"), e);
     }
@@ -53,7 +53,7 @@ public enum Teacup {
     LOGGER.log(Level.FINE, MESSAGE, new Object[] {"server", name, clazz.getName()});
 
     try {
-      return io.github.henryssondaniel.teacup.core.Teacup.getServer(clazz, EXECUTOR, name);
+      return io.github.henryssondaniel.teacup.engine.Teacup.getServer(clazz, EXECUTOR, name);
     } catch (TeacupException e) {
       throw new AssertionFailedError(String.format(ERROR, "server"), e);
     }

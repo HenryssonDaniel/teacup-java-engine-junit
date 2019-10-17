@@ -1,10 +1,10 @@
 package io.github.henryssondaniel.teacup.engine.junit;
 
-import io.github.henryssondaniel.teacup.core.Executor;
-import io.github.henryssondaniel.teacup.core.Fixture;
 import io.github.henryssondaniel.teacup.core.reporting.Factory;
 import io.github.henryssondaniel.teacup.core.reporting.Reporter;
 import io.github.henryssondaniel.teacup.core.testing.Node;
+import io.github.henryssondaniel.teacup.engine.Executor;
+import io.github.henryssondaniel.teacup.engine.Fixture;
 import java.io.File;
 import java.nio.file.Path;
 import java.time.ZoneOffset;

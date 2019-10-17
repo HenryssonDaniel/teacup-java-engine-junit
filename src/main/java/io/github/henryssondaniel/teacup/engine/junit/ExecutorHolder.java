@@ -1,7 +1,7 @@
 package io.github.henryssondaniel.teacup.engine.junit;
 
-import io.github.henryssondaniel.teacup.core.Executor;
-import io.github.henryssondaniel.teacup.core.ExecutorFactory;
+import io.github.henryssondaniel.teacup.engine.Executor;
+import io.github.henryssondaniel.teacup.engine.ExecutorFactory;
 
 enum ExecutorHolder {
   ;

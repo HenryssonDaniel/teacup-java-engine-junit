@@ -6,9 +6,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
-import io.github.henryssondaniel.teacup.core.Executor;
-import io.github.henryssondaniel.teacup.core.Fixture;
 import io.github.henryssondaniel.teacup.core.testing.Node;
+import io.github.henryssondaniel.teacup.engine.Executor;
+import io.github.henryssondaniel.teacup.engine.Fixture;
 import java.io.File;
 import java.util.Collections;
 import java.util.Map;

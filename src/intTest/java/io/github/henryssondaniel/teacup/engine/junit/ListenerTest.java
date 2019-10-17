@@ -2,9 +2,9 @@ package io.github.henryssondaniel.teacup.engine.junit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import io.github.henryssondaniel.teacup.core.Executor;
-import io.github.henryssondaniel.teacup.core.Fixture;
 import io.github.henryssondaniel.teacup.core.testing.Node;
+import io.github.henryssondaniel.teacup.engine.Executor;
+import io.github.henryssondaniel.teacup.engine.Fixture;
 import java.util.Collections;
 import java.util.Map;
 import org.junit.jupiter.api.Test;

@@ -1,7 +1,7 @@
 package io.github.henryssondaniel.teacup.engine.junit;
 
-import io.github.henryssondaniel.teacup.core.Fixture;
-import io.github.henryssondaniel.teacup.core.Setup;
+import io.github.henryssondaniel.teacup.engine.Fixture;
+import io.github.henryssondaniel.teacup.engine.Setup;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
