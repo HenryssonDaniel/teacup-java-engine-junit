@@ -2,8 +2,8 @@ package io.github.henryssondaniel.teacup.engine.junit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import io.github.henryssondaniel.teacup.core.Server;
 import io.github.henryssondaniel.teacup.engine.Fixture;
+import io.github.henryssondaniel.teacup.protocol.Server;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.assertj.core.api.Assertions;

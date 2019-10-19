@@ -1,9 +1,9 @@
 package io.github.henryssondaniel.teacup.engine.junit;
 
-import io.github.henryssondaniel.teacup.core.Server;
 import io.github.henryssondaniel.teacup.core.logging.Factory;
 import io.github.henryssondaniel.teacup.engine.Executor;
 import io.github.henryssondaniel.teacup.engine.TeacupException;
+import io.github.henryssondaniel.teacup.protocol.Server;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.opentest4j.AssertionFailedError;
