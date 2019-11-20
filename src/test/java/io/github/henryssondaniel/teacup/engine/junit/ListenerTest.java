@@ -3,7 +3,7 @@ package io.github.henryssondaniel.teacup.engine.junit;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import io.github.henryssondaniel.teacup.core.testing.Node;
@@ -91,7 +91,7 @@ class ListenerTest {
   void executionFinishedWhenNotInTestPlan() {
     testExecutionListener.executionFinished(
         TestIdentifier.from(testDescriptor), testExecutionResult);
-    verifyZeroInteractions(testExecutionResult);
+    verifyNoInteractions(testExecutionResult);
   }
 
   @Test
