@@ -1,3 +1,12 @@
+#### 1.1.4
+- 2019-11-23
+- Runs with Java 13
+- Added dependency to Teacup Engine repository
+- Added dependency to Teacup Protocol repository
+- Use AssertJ version 3.14.0, stepped from 3.12.2
+- Use Gradle version 6.0.1, stepped from 5.6.2
+- Use JUnit version 5.6.0-M1, stepped from 5.5.2
+- Use Teacup Core version 1.2.0, stepped from 1.1.4
 #### 1.1.3
 - 2019-10-06
 - Use Gradle version 5.6.2, stepped from 5.6

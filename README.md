@@ -1,7 +1,7 @@
 # [User Guide](https://henryssondaniel.github.io/teacup.github.io/)
 [![Build Status](https://travis-ci.com/HenryssonDaniel/teacup-java-engine-junit.svg?branch=master)](https://travis-ci.com/HenryssonDaniel/teacup-java-engine-junit)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=HenryssonDaniel_teacup-java-engine-junit&metric=coverage)](https://sonarcloud.io/dashboard?id=HenryssonDaniel_teacup-java-engine-junit)
-[![latest release](https://img.shields.io/badge/release%20notes-1.1.3-yellow.svg)](https://github.com/HenryssonDaniel/teacup-java-engine-junit/blob/master/doc/release-notes/official.md)
+[![latest release](https://img.shields.io/badge/release%20notes-1.1.4-yellow.svg)](https://github.com/HenryssonDaniel/teacup-java-engine-junit/blob/master/doc/release-notes/official.md)
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.henryssondaniel.teacup.engine/junit.svg)](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22io.github.henryssondaniel.teacup.engine%22%20AND%20a%3A%22junit%22)
 [![Javadocs](https://www.javadoc.io/badge/io.github.henryssondaniel.teacup.engine/junit.svg)](https://www.javadoc.io/doc/io.github.henryssondaniel.teacup.engine/junit)
 ## What ##
